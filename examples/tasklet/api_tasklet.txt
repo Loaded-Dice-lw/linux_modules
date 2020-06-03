@@ -1,0 +1,26 @@
+tasklet机制内核API
+核心数据结构
+struct tasklet_struct
+{
+    struct tasklet_struct *next; //实现多个tasklet链表
+    unsigned long state;         //当前这个tasklet是否已经被调度
+    atomic_t count;              //值为0时用户才可以调度
+    void (*func)(unsigned long)  //指向tasklet绑定的函数的指针
+    unsigned long data;          //传递能tasklet绑定的函数的参数
+}
+
+1.静态初始化
+    DECLARE_TASKLET(name, func, data)
+宏定义 展开 = struct tasklet_struct name = {NULL, 0 ,ATOMIC_INIT(0), func, data}
+    DECLARE_TASKLET_DISABLED(...)  --->ATOMIC_INIT(1)
+2.动态初始化
+    void tasklet_init(struct tasklet_struct *t, void (*func)(unsigned long), unsigned long data)
+3.tasklet使能，禁能
+    void tasklet_disable(struct tasklet_struct *t) count值+1
+    void tasklet_enable(struct tasklet_struct *t)  count值-1    
+4.tasklet 调度
+    void tasklet_schedule(struct tasklet_struct *t)
+    通知内核执行绑定的函数，设置state位
+5.删除tasklet
+    void tasklet_kill(struct tasklet_struct *t)
+    

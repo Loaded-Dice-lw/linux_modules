@@ -1,0 +1,30 @@
+linux内核定时器操作相关API
+1.静态定义并初始化
+    定义一个名字为_name的struct timer_list结构变量
+    DEFINE_TIMER（_name, _function, _expires, _data）
+2.初始化函数
+    init_timer(struct timer_list *timer)
+    对struct timer_list结构成员进行一些基础化操作，function,expires,data需要用户填充
+3.设置定时器
+    setup_timer(timer, fn, data) 设置函数和传参
+    expires 需要用户自己初始化
+4.注册定时器到内核
+    void add_timer(struct timer_list *timer)
+5.从内核注销定时器
+    int del_timer(struct timer_list *timer)
+    从内核定时器链表上删除制定定时器
+6.int mod_timer(struct timer_list *timer, unsigned long expires)
+    修改定时器定时时间，重新注册定时器。
+
+linux 内核时间相关转换函数
+    unsigned long usecs_to_jiffies(const unsigned int u)
+    unsigned long msecs_to_jiffies(const unsigned int m)
+    分别对应将微秒，毫秒转换为jiffies
+
+编程步骤
+    编写定时器超时函数
+    定义核心结构timer_list 变量
+    初始化
+    使用add_timer/mod_timer启动定时器
+    使用del_timer取消定时器 
+
