@@ -1,0 +1,29 @@
+1.核心结构
+struct cdev {
+    struct kobject obj;
+    struct module *owner;
+    const struct file_operations *ops;
+    struct list_head list;
+    dev_t dev;  //32位设备号 包含主次
+    unsigned int count; //占用多少个连续的次设备号。
+}
+2.设备号
+    主设备号 高12位  次设备号 低20位
+设备号合成/分解相关函数 
+MKDEV（ma,mi） MAJOR(dev) MINOR(dev)
+3.特征
+    需要手动mknod创建节点
+    调用cdev_add()注册时，可指定占用次设备号的数量，主设备号多次使用。
+    设备号使用前需要先申请:register_chrdev_region()静态分配或alloc_chrdev_region动态分配
+4.设备号申请/释放函数
+    int register_chrdev_region(dev_t from, unsigned count, const char *name);
+    int alloc_chrdev_region(dev_t *dev, unsigned baseminor, unsigned count, const char *name);
+    void unregister_chrdev_region(dev_t from, unsigned int count);
+5.核心结构分配函数
+    struct cdev*cdev_alloc(void);
+    kfree(void *p);
+6.核心结构初始化函数
+    struct cdev_init(struct cdev *cdev, const struct file_operations *fops);
+7.设备注册/注销函数
+    int cdev_add(struct cdev *p, dev_t dev, unsigned count);
+    void cdev_void(struct cdev *p);

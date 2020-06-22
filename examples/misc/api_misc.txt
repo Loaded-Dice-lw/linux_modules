@@ -1,0 +1,26 @@
+杂项设备驱动模型
+	采用面向对象的方法管理设备。
+	定义特定的结构体来描述一类设备。（设备的基本信息和操作方法）
+杂项设备的核心数据结构
+struct miscdevice {
+	int minor; //次设备号
+	const char *name; // /dev下的设备名
+	const struct file_operations *fops; //文件操作方法集合指针
+	
+	struct list_head list;
+	struct device *parent;
+	struct device *this_device;
+	const char *nodename;
+	umode_t mode;
+}
+
+杂项设备的设备号
+	主： 10 次: 0～255(填入255内核会动态分配可用的)
+
+杂项设备特征: 安装后会自动在/dev目录下生成设备文件。
+
+通过内核提供的函数注册/注销
+int misc_register(struct misc device *misc); 成功返回0 失败返回负数错误码
+int misc_deregister(struct misc_device *misc);
+
+字符设备 --- 驱动 open "/dev/xxx" 获取设备的主设备号和次设备号。在内核中寻找具有相同设备号的驱动程序。
