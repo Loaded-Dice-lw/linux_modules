@@ -11,3 +11,4 @@ Linux设备模型的核心思想是（通过xxx手段，实现xxx目的）：
 4. 使用Class结构，在设备模型中引入面向对象的概念，这样可以最大限度地抽象共性，减少驱动开发过程中的重复劳动，降低工作量。
 
 https://blog.csdn.net/qq_16777851/category_7901554.html
+http://www.wowotech.net/
