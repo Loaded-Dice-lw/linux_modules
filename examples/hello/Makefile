@@ -1,7 +1,5 @@
-#KERNELDIR := /lib/modules/$(shell uname -r)/build
 KERNELDIR := /lib/modules/`uname -r`/build
-obj-m := demo.o
-demo-objs = add.o hello.o
+obj-m := hello.o
 
 modules:
 	@$(MAKE) -C $(KERNELDIR) M=$(PWD) modules

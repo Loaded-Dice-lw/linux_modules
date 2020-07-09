@@ -1,11 +1,8 @@
 #include <linux/init.h>
 #include <linux/module.h>
 
-extern int add_func(const int a, const int b);
-
 static int __init hello_init(void)
 {       
-    int res = add_func(1,4); 
     printk(KERN_DEBUG "helloworld!priority = 7 \n");
     printk(KERN_INFO "helloworld!prio = 6 \n");
     printk(KERN_NOTICE "helloworld!prio = 5 \n");
@@ -14,7 +11,6 @@ static int __init hello_init(void)
     printk(KERN_CRIT "helloworld!prio = 2 \n");
     printk(KERN_ALERT "helloworld!prio = 1 \n");
     printk(KERN_EMERG "helloworld!prio = 0 \n");
-    printk("helloworld! res = %d prio = DEFAULT_MESSAGE_LOGLEVEL \n", res);
     return 0;
 }       
 
@@ -29,7 +25,6 @@ static void __exit hello_exit(void)
     printk(KERN_CRIT "goodbye!prio = 2 \n");
     printk(KERN_ALERT "goodbye!prio = 1 \n");
     printk(KERN_EMERG "goodbye!prio = 0 \n");
-    printk("goodbye!prio = DEFAULT_MESSAGE_LOGLEVEL \n");
 }       
 
 module_init(hello_init);
